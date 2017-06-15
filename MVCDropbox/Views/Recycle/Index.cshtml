@@ -1,0 +1,60 @@
+﻿@model PagedList.IPagedList<string>
+@using PagedList.Mvc;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Корзина";
+}
+
+@using (Html.BeginForm("Index", "Recycle", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </span>
+                <input type="text" name="searchString" class="form-control" placeholder="Поиск..." value="@ViewBag.CurrentFilter">
+            </div>
+        </div>
+    </div>
+}
+
+<br />
+<div class="panel panel-primary">
+    <div class="panel-heading">Корзина</div>
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Название файла</th>
+            <th>Действия</th>
+        </tr>
+        @for (var i = 0; i <= Model.Count - 1; i++)
+        {
+            <tr>
+                <td>@(i + 1)</td>
+                <td>
+                    @Model[i].ToString()
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success"
+                            onclick="location.href='@Url.Action("Restore", "Recycle", new { ImageName = @Model[i].ToString() })'">
+                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                    </button>
+
+                    <button type="button" class="btn btn-danger"
+                            onclick="location.href='@Url.Action("Delete", "Recycle", new { ImageName = @Model[i].ToString() })'">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<br />
+<div class="text-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.CurrentFilter }))
+</div>

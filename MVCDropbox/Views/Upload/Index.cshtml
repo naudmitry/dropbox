@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Загрузка";
+}
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script>
+    $(function () {
+
+        // We can attach the `fileselect` event to all file inputs on the page
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+
+        // We can watch for our custom `fileselect` event like this
+        $(document).ready(function () {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+        });
+
+    });
+</script>
+
+@using (Html.BeginForm("Upload", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">Загрузка файлов на сервер</div>
+        <br/>
+        <div class="input-group" style="margin-left: 20px;">
+            <label class="input-group-btn">
+                <span class="btn btn-primary">
+                    Обзор&hellip; <input type="file" name="file" style="display: none;" multiple>
+                </span>
+            </label>
+            <input type="text" class="form-control" readonly>&nbsp;
+            <input class="btn btn-success" type="submit" name="Submit" value="Загрузить" />
+        </div>
+        <span class="help-block" style="margin-left: 20px;">
+            Выберите файл, а затем нажмите кнопку загрузить.
+        </span>
+    </div>
+}

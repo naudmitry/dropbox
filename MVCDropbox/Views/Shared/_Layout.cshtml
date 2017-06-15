@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - DropBox приложение</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body style="padding-top:25px;">
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    @Html.ActionLink("Dropbox", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <ul class="nav navbar-nav">
+                    @if (User.Identity.Name != "")
+                    {
+                        <li>@Html.ActionLink("Загрузить на сервер", "Index", "Upload")</li>
+                        <li><a href="/Download/Index">Скачать на компьютер <span class="badge">@ViewBag.CountFiles</span></a></li>
+                        <li><a href="/Recycle/Index">Корзина <span class="badge">@ViewBag.CountRecycleFiles</span></a></li>
+                    }
+                </ul>
+                
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </nav>
+
+        <div>
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - DropBox приложение</p>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

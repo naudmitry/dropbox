@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Главная";
+}
+
+<ul class="list-group" style="width:50%;">
+    <li class="list-group-item">
+        <span class="badge">@ViewBag.CountFiles</span>
+        @Html.ActionLink("Количество файлов на сервере", "Index", "Download")
+    </li>
+    <li class="list-group-item">
+        <span class="badge">@ViewBag.CountRecycleFiles</span>
+        @Html.ActionLink("Количество файлов в корзине", "Index", "Recycle")
+    </li>
+</ul>
